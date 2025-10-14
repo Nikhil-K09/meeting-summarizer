@@ -1,5 +1,8 @@
 streamlit
-requests
+assemblyai
 google-generativeai
 pymongo
 python-dotenv
+fpdf
+python-docx
+markdown

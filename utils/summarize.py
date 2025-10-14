@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,15 +9,14 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 def summarize_text(transcript, prompt=None):
     try:
-        # ✅ Use supported model name
         model = genai.GenerativeModel("gemini-2.5-flash")
 
         full_prompt = f"""
 You are an AI meeting summarizer.
-Summarize the following transcript into:
-1. A short meeting summary
-2. Key decisions
-3. Action items (Markdown checklist)
+Summarize the following transcript into clearly separated sections:
+1. Short Meeting Summary
+2. Key Decisions
+3. Action Items (Markdown checklist with [ ] boxes)
 
 Transcript:
 {transcript}
@@ -26,18 +26,33 @@ Extra instructions:
 """
 
         response = model.generate_content(full_prompt)
-        output = response.text
+        output = response.text.strip() if response and response.text else ""
 
         if not output:
             return "No summary generated.", "No action items found."
 
-        # Simple parsing
-        if "Action Items" in output:
-            parts = output.split("Action Items", 1)
-            summary = parts[0].strip()
-            actions = "### Action Items\n" + parts[1].strip()
+        # --- Improved parsing using regex ---
+        # Match anything after "Action Items" (case-insensitive, flexible punctuation)
+        action_match = re.search(
+            r"(?:###|##|\d+\.|\*\*)?\s*Action Items[:\-\n]*([\s\S]+)", 
+            output, 
+            re.IGNORECASE
+        )
+
+        if action_match:
+            actions = action_match.group(1).strip()
+            # Summary = everything before that section
+            summary = output[:action_match.start()].strip()
         else:
-            summary, actions = output, "No clear action items found."
+            summary = output
+            actions = "No clear action items found."
+
+        # Clean formatting (remove redundant section numbers)
+        summary = re.sub(r"\n*\d+\.\s*$", "", summary)
+        summary = re.sub(r"\n\s*\d+\.\s*\Z", "", summary)
+
+        # Add markdown header for consistency
+        actions = f"### Action Items\n{actions}"
 
         return summary, actions
 
