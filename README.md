@@ -3,7 +3,8 @@
 
 ##  Description
 A Streamlit-based audio transcription and summarization tool that allows users to upload audio files, generate transcripts, extract summaries, and identify actionable items using tools like streamlit, Mongodb, Assemplyai api, Gemini api. PDF,Word,md download option and a simple UI.
-
+#
+Live - https://meeting-summarizer-ease.streamlit.app/
 ---
 
 ##  Installation
