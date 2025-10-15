@@ -33,10 +33,7 @@ Implemented on a real product meeting audio file (meeting link - https://www.you
 
 ###  Demo Video
 
-<video width="720" height="480" controls>
-  <source src="demo_video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/user-attachments/assets/45d29aef-0f27-4990-baf1-25dd48fff1ef
 
 ---
 
