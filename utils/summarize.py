@@ -31,8 +31,6 @@ Extra instructions:
         if not output:
             return "No summary generated.", "No action items found."
 
-        # --- Improved parsing using regex ---
-        # Match anything after "Action Items" (case-insensitive, flexible punctuation)
         action_match = re.search(
             r"(?:###|##|\d+\.|\*\*)?\s*Action Items[:\-\n]*([\s\S]+)", 
             output, 
@@ -41,17 +39,14 @@ Extra instructions:
 
         if action_match:
             actions = action_match.group(1).strip()
-            # Summary = everything before that section
             summary = output[:action_match.start()].strip()
         else:
             summary = output
             actions = "No clear action items found."
 
-        # Clean formatting (remove redundant section numbers)
         summary = re.sub(r"\n*\d+\.\s*$", "", summary)
         summary = re.sub(r"\n\s*\d+\.\s*\Z", "", summary)
 
-        # Add markdown header for consistency
         actions = f"### Action Items\n{actions}"
 
         return summary, actions

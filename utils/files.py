@@ -34,7 +34,6 @@ def generate_downloads(file_name, transcript, summary, action_items):
 
     doc.build(story)
 
-    # ---- DOCX ----
     from docx import Document
     doc = Document()
     doc.add_heading("Meeting Summary", 0)
@@ -46,7 +45,6 @@ def generate_downloads(file_name, transcript, summary, action_items):
     doc.add_paragraph(action_items)
     doc.save(docx_path)
 
-    # ---- Markdown ----
     md_content = f"""# Meeting Summary
 
 ## Transcript

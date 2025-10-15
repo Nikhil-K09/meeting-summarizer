@@ -6,3 +6,4 @@ python-dotenv
 fpdf
 python-docx
 markdown
+reportlab

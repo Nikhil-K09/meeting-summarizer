@@ -6,10 +6,9 @@ from utils.files import generate_downloads
 import os
 import re
 
-# --- Page setup ---
 st.set_page_config(page_title="Meeting Summarizer", layout="wide", page_icon="🔘")
 
-# --- Custom CSS ---
+# css
 st.markdown(
     """
     <style>
@@ -46,12 +45,12 @@ st.markdown(
 
 st.title("Meeting Summarizer")
 
-# --- Layout ---
+# 
 left_col,spacer, right_col = st.columns([2, 0.3,3])
 
-# ----------------------------
-# LEFT PANEL
-# ----------------------------
+
+# left panl
+
 with left_col:
     st.header("📂 Upload file")
 
@@ -63,7 +62,7 @@ with left_col:
             st.warning("Please upload an audio file first.")
             st.stop()
 
-        # --- Transcription ---
+        # transcription
         with st.spinner("Transcribing audio..."):
             transcript = transcribe_audio(audio_file)
             if not transcript:
@@ -71,21 +70,21 @@ with left_col:
                 st.stop()
         st.success("Transcription completed")
 
-        # --- Summarization ---
+        #summarization
         with st.spinner("Summarizing content..."):
             summary, action_items = summarize_text(transcript, prompt)
 
-        # 🔹 Clean summary formatting
-        summary = re.sub(r"\n*\d+\.\s*$", "", summary.strip())  # remove lonely trailing numbers
-        summary = re.sub(r"\n\s*\d+\.\s*\Z", "", summary)       # remove section-ending digits
+        
+        summary = re.sub(r"\n*\d+\.\s*$", "", summary.strip())  
+        summary = re.sub(r"\n\s*\d+\.\s*\Z", "", summary)       
 
         st.success("Summary generated!")
 
-        # --- Save to DB ---
+        #add to mongodb
         save_to_db(audio_file.name, transcript, summary, action_items)
         
 
-        # --- Generate download files ---
+        # downlod
         pdf_file, docx_file, md_file = generate_downloads(audio_file.name, transcript, summary, action_items)
 
         st.session_state.update({
@@ -100,9 +99,7 @@ with left_col:
             }
         })
 
-# ----------------------------
-# RIGHT PANEL
-# ----------------------------
+# right panel
 with right_col:
     st.header("Preview")
 
@@ -115,22 +112,22 @@ with right_col:
 
         tab1, tab2, tab3 = st.tabs(["Transcript", "Summary", "Action Items"])
 
-        # --- Transcript Tab ---
+       
         with tab1:
             st.markdown("### Transcript")
             st.markdown(f"<div class='scroll-box'>{transcript}</div>", unsafe_allow_html=True)
 
-        # --- Summary Tab ---
+        
         with tab2:
             st.markdown("### Summary")
             st.markdown(f"<div class='scroll-box'>{summary}</div>", unsafe_allow_html=True)
 
-        # --- Action Items Tab (render markdown properly) ---
+     
         with tab3:
             if action_items:
                 import markdown
 
-                # Convert Markdown to HTML and wrap inside one HTML block
+                
                 action_html = markdown.markdown(action_items, extensions=['extra', 'nl2br'])
 
                 full_html = f"""
@@ -147,7 +144,7 @@ with right_col:
 
 
 
-        # --- Download section ---
+        
         with left_col:
             st.subheader("Download File")
 
