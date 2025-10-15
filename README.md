@@ -24,7 +24,10 @@ streamlit run app.py
 ## Preview
 Implemented on a real product meeting audio file (meeting link - https://www.youtube.com/watch?v=yX0n5PqO9qU&t=184s)
 
- ![Screenshot 1](screenshots/screenshot_1.png) ![Screenshot 2](screenshots/screenshot_2.png) 
+ ![Screenshot 1](screenshots/screenshot_1.png) 
+ ---
+ ![Screenshot 2](screenshots/screenshot_2.png) 
+ ---
 ![Screenshot 3](screenshots/screenshot_3.png) 
 ---
 
