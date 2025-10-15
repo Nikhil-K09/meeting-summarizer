@@ -7,7 +7,7 @@ import os
 import re
 
 # --- Page setup ---
-st.set_page_config(page_title="Meeting Summarizer", layout="wide", page_icon="🧠")
+st.set_page_config(page_title="Meeting Summarizer", layout="wide", page_icon="🔘")
 
 # --- Custom CSS ---
 st.markdown(
